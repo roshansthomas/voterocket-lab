@@ -1,4 +1,4 @@
-# Dev Labs: Build a modern serverless web application in minutes using the AWS Amplify Framework
+Build a modern serverless web application in minutes using the AWS Amplify Framework
 
 <p align="center">
   <img src="./images/voterocket.png" alt="Vote Rocket" width="200">
