@@ -4,9 +4,9 @@
   <img src="./images/voterocket.png" alt="Vote Rocket" width="200">
 </p>
 
-This lab is provided as part of [AWS Builders Online Series](https://aws.amazon.com/events/builders-online-series/).
+This lab is provided as part of **[AWS Summit Online](https://aws.amazon.com/events/summits/online/)**.
 
-ℹ️ You will run this lab in your own AWS account. Please follow directions at the end of the lab to remove resources to minimize costs.
+ℹ️ You will run this lab in your own AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
 
 [AWS Amplify](https://aws.amazon.com/amplify/) makes it easy for you to create, configure, and implement scalable mobile and web apps powered by AWS. In this workshop you will learn how to build the Vote Rocket voting web application with [React](https://reactjs.org/) and the [Amplify Framework](https://aws-amplify.github.io/)
 
@@ -374,6 +374,7 @@ You need to add the [Amplify Framework dependencies](https://aws-amplify.github.
 **37.** Run this command:
 
 ```
+cd voterocket
 yarn add aws-amplify aws-amplify-react chart.js react-chartjs-2
 ```
 
@@ -405,6 +406,11 @@ You can now view voterocket in the browser.
 Note that the development build is not optimized.
 To create a production build, use yarn build.
 ```
+
+Or you might see this warning instead. You can ignore it and proceed to run the application
+
+![](images/c9_warning.png)
+
 
 **40.** In the Cloud9 **Preview** menu, click **Preview Running Application**.
 
