@@ -501,6 +501,7 @@ Please follow these instructions to clean-up your account so that there will be 
 **44.** Run this command to remove resources that were created during the lab (Press Ctrl+C first to stop the running app):
 
 ```
+cd ~/environment/voterocket
 amplify delete
 ```
 
