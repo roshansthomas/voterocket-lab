@@ -4,7 +4,7 @@
   <img src="./images/voterocket.png" alt="Vote Rocket" width="200">
 </p>
 
-This lab is provided as part of **[AWS Summit Online](https://aws.amazon.com/events/summits/online/)**, click [here](https://bit.ly/2yLtZqL) to explore the full list of hands-on labs.
+This lab is provided as part of **[AWS Innovate - Modern Applications Edition](https://aws.amazon.com/events/aws-innovate/modern-apps/)**, click [here](https://google.com) to explore the full list of hands-on labs.
 
 ℹ️ You will run this lab in your own AWS account. Please follow directions at the end of the lab to remove resources to avoid future costs.
 
@@ -34,15 +34,13 @@ You will now create a Cloud9 environment.
 
 **4.** For **Name**, enter: `amplify-lab`
 
-**5.** Click **Next step** twice, then click **Create environment**.
+**5.** Select Instance type as t3.small and leave rest as default. Click **Next step**, then click **Create environment**.
 
 Cloud9 will take a few minutes to launch the environment. Once it is ready, continue to the next step.
 
 **6.** In the bash terminal at the bottom of the screen (showing `~/environment $`), run the following commands:
 
 ```
-npm install -g yarn create-react-app
-
 region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
 
 cat <<END > ~/.aws/config
@@ -50,17 +48,22 @@ cat <<END > ~/.aws/config
 region=$region
 END
 
-git clone https://github.com/aws-john/voterocket-lab.git
-
+git clone https://github.com/roshansthomas/voterocket-lab
 ```
-
+**6.1** By default the cloud 9 environment is provisioned with 10GiB EBS volume. For this lab, the volume must be extended to 30GiB. In order to do this run the below command.
+```
+cd ~/environment/voterocket-lab/
+chmod +x resize.sh
+./resize.sh 30
+```
 **Hint:** You can expand the size of the terminal pane.
 
-You will now install the AWS Amplify CLI.
+You will now install the yarn, create-react-app and AWS Amplify CLI.
 
 **7.** Run this command:
 
 ```bash
+npm install -g yarn create-react-app
 npm install -g @aws-amplify/cli
 ```
 
@@ -81,22 +84,24 @@ cd voterocket
 amplify init
 ```
 
-**10.** Provide the following values when prompted:
+**10.** Leave the values as default and hit enter:
 
 - Enter a name for the project: `voterocket`
-- Enter a name for the environment: `dev`
-- Choose your default editor: `None`
-- Choose the type of app that you're building: `javascript`
+- The following prompt is displayed
+      The following configuration will be applied:
 
-Please tell us about your project:
+      Project information
+      | Name: voterocket
+      | Environment: dev
+      | Default editor: Visual Studio Code
+      | App type: javascript
+      | Javascript framework: react
+      | Source Directory Path: src
+      | Distribution Directory Path: build
+      | Build Command: npm run-script build
+      | Start Command: npm run-script start
 
-- What javascript framework are you using: `react`
-- Source Directory Path:  `src`
-- Distribution Directory Path: `build`
-- Build Command: `npm run-script build`
-- Start Command: `npm run-script start`
-- Do you want to use an AWS profile? `Yes`
-- Please choose the profile you want to use: `default`
+      Initialize the project with the above configuration? (Y/n) Y
 
 The AWS Amplify CLI will initialise a new project inside your React project and you will see a new folder called **amplify**. The files in this folder hold your project configuration.
 
@@ -110,16 +115,15 @@ amplify add api
 
 **12.** Provide the following values when prompted:
 
-- Please select from one of the above mentioned services: `GraphQL`
+- Please select from one of the below mentioned services: `GraphQL`
 - Provide API name: `voterocket`
-- Choose an authorization type for the API: `API key`
+- Choose the default authorization type for the API `API key`
 - Enter a description for the API key: `default`
 - After how many days from now the API key should expire (1-365): `7`
-- Do you want to configure advanced settings for the GraphQL API? `No, I am done.`
-- Do you have an annotated GraphQL schema? `N`
-- Do you want a guided schema creation? `Y`
-- What best describes your project: `Single object with fields (e.g. “Todo” with ID, name, description)`
-- Do you want to edit the schema now? (Y/n) `Y`
+- Do you want to configure advanced settings for the GraphQL API `No, I am done.`
+- Do you have an annotated GraphQL schema? `No`
+- Choose a schema template: `Single object with fields (e.g., “Todo” with ID, name, description)`
+- Do you want to edit the schema now? (y/N) `y`
 
 Voterocket's schema requires a `Candidate` with an `id`, `name`, `description` and count of `votes` received.
 
@@ -138,7 +142,7 @@ type Candidate @model {
 
 **15.** Save the file.
 
-Amplify CLI uses [GraphQL Transform](https://aws-amplify.github.io/docs/cli/graphql?sdk=js), which simplify the process of developing, deploying, and maintaining GraphQL APIs on AWS. Transforms are implemented using [directives](https://medium.com/open-graphql/graphql-directives-3dec6106c384)
+Amplify CLI uses [GraphQL Transform](https://aws-amplify.github.io/docs/cli/graphql?sdk=js), which simplifies the process of developing, deploying, and maintaining GraphQL APIs on AWS. Transforms are implemented using [directives](https://medium.com/open-graphql/graphql-directives-3dec6106c384)
 
 This example uses the `@model` directive, which by default will [automatically configure these AWS resources](https://aws-amplify.github.io/docs/cli/graphql#generates).
 
@@ -195,7 +199,7 @@ It should return an empty list of items. This is because there is no data in the
 
 ### Adding a mutation from within the AWS AppSync Console
 
-You will now add some `Candidate`s using a _mutation_ as below. This will add four entries and return a result.
+You will now add some `Candidate`s using a [mutation](https://graphql.org/learn/queries/#mutations) as below. This will add four entries and return a result.
 
 **23.** Run this query (deleting the existing contents):
 
@@ -248,24 +252,13 @@ It will return only the `Candidate` whose name contains **Lambda**.
 
 ## Adding custom business logic to the GraphQL API
 
-Because this is a voting application you need to find a way to record a vote for a candidate. While you could use the `updateCandidate` mutation and resolver that was generated for us, this relies on having to increment the value on the client. It can't be guaranteed that all clients will have the same value for the vote count—it's much more robust to do this server-side<sup><a name="fnote_ref_1">[1.](#fnote1)</a></sup>.
+Because this is a voting application you need to find a way to record a vote for a candidate. While you could use the `updateCandidate` mutation and resolver that was generated for us, this relies on having to increment the value on the client. It can't be guaranteed that all clients will have the same value for the vote count. It's more robust to do this as a server-side operation<sup><a name="fnote_ref_1">[1.](#fnote1)</a></sup>.
 
-This is how you would it if this were the AWS CLI:
-
-```bash
-aws dynamodb update-item \
-    --table-name Candidate \
-    --key '{ "id": {"S": "552e120b-3192-4cac-bb13-c8821472e6d6"} }' \
-    --update-expression 'set #votesField = #votesField + :i' \
-    --expression-attribute-values '{ ":i": { "N": "10"} }' \
-    --expression-attribute-names '{ "#votesField": "votes" }'
-```
-
-For the GraphQL API to execute a similar `update-item` you need to create a **custom resolver**<sup><a name="fnote_ref_2">[2.](#fnote2)</a></sup>.
+For the GraphQL API to increase the value of the `votes` variable by 1, you need to create a **custom resolver**<sup><a name="fnote_ref_2">[2.](#fnote2)</a></sup>.
 
 ### Append `castVote` to your GraphQL schema
 
-**26.** Append the following to the end of the `schema.graphql` file:
+**26.** Append the following to the end of the `schema.graphql` file at location `amplify/backend/api/voterocket`:
 
 ```graphql
 input CastVoteInput {
@@ -293,9 +286,6 @@ This will allow a call to the `castVote` mutation that will increment the vote c
 ```bash
 cp ~/environment/voterocket-lab/samples/Mutation.castVote.*.vtl ./amplify/backend/api/voterocket/resolvers/
 ```
-
-If you open the `Mutation.castVote.req.vtl` resolver in the editor you will see it looks a lot like `aws dynamodb update-item` CLI command above.
-
 You also need to tell Amplify to add these resolvers to your API by adding a new resolver resource to Amplify's CloudFormation templates.
 
 **29.** Run this command to copy the `CustomResources.json` file from the `samples` folder and overwrite the file at `./amplify/backend/api/voterocket/stacks/CustomResources.json`:
@@ -374,7 +364,7 @@ You need to add the [Amplify Framework dependencies](https://aws-amplify.github.
 **37.** Run this command:
 
 ```
-cd voterocket
+cd ~/environment/voterocket
 yarn add aws-amplify aws-amplify-react chart.js react-chartjs-2
 ```
 
@@ -434,7 +424,7 @@ In a short space of time you were able to create a working application from scra
 
 A scalable serverless back-end:
 
-- Real-time GraphQL API, with a comprehensive set of queries, mutations and subscriptions for common [CRUDL](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and custom operations
+- Real-time GraphQL API, with a comprehensive set of queries, mutations and subscriptions for common [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and custom operations
 - Database to hold the state with a lock-free atomic counter to hold vote counts
 - Custom business logic to connect the API to the database
 
@@ -496,6 +486,7 @@ This will update the React state using the GraphQL subscription you added to the
 ### Host using the AWS Amplify Console
 
 You can also very easily deploy the application using [AWS Amplify Console](https://aws.amazon.com/amplify/console/). Here are some [examples](https://aws.amazon.com/amplify/console/getting-started/) that demonstrate how to do this.
+Note: Once deployed to Amplify Console, you will have to create Candidate Items via the new GraphQL API as shown [here](https://github.com/roshansthomas/voterocket-lab#adding-a-mutation-from-within-the-aws-appsync-console)
 
 ### Use other Amplify Framework features and services
 
@@ -525,7 +516,7 @@ You will need to enter **Delete** to delete the environment.
 - AWS Amplify product page: [https://aws.amazon.com/amplify/ ](https://aws.amazon.com/amplify/)
 - Awesome AWS Amplify: [https://github.com/dabit3/awesome-aws-amplify ](https://github.com/dabit3/awesome-aws-amplify)
 - The AWS AppSync community: [https://github.com/aws/aws-appsync-community ](https://github.com/aws/aws-appsync-community)
-- Full code for this lab at [https://github.com/awssgr/voterocket ](https://github.com/awssgr/voterocket)
+- Full code for this lab at [https://github.com/roshansthomas/voterocket ](https://github.com/awssgr/voterocket)
 
 ---
 
