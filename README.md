@@ -10,13 +10,18 @@ This lab is provided as part of **[AWS Innovate - Modern Applications Edition](h
 
 [AWS Amplify](https://aws.amazon.com/amplify/) makes it easy for you to create, configure, and implement scalable mobile and web apps powered by AWS. In this workshop you will learn how to build the Vote Rocket voting web application with [React](https://reactjs.org/) and the [Amplify Framework](https://aws-amplify.github.io/)
 
-## Topics
+## Content
 
-- Setup
-- Getting started - create the application
-- Adding a GraphQL API
-- Adding custom business logic to the GraphQL API
-- Creating the React front-end application
+- [Setting Up the Lab Environment](https://github.com/roshansthomas/voterocket-lab/#setting-up-the-lab-environment)
+- [Getting started - create the application](https://github.com/roshansthomas/voterocket-lab/#getting-started---create-the-application)
+- [Adding a GraphQL API](https://github.com/roshansthomas/voterocket-lab/#adding-a-graphql-api)
+- [Using the generated AppSync API](https://github.com/roshansthomas/voterocket-lab/#using-the-generated-appsync-api)
+- [Adding custom business logic to the GraphQL API](https://github.com/roshansthomas/voterocket-lab/#adding-custom-business-logic-to-the-graphql-api)
+- [Creating the React front-end application](https://github.com/roshansthomas/voterocket-lab/#creating-the-react-front-end-application)
+- [Recap](https://github.com/roshansthomas/voterocket-lab/#recap)
+- [Clean Up](https://github.com/roshansthomas/voterocket-lab/#clean-up)
+- [Survey](https://github.com/roshansthomas/voterocket-lab/#survey)
+- [Further reading](https://github.com/roshansthomas/voterocket-lab/#further-reading)
 
 ## Setting Up the Lab Environment
 
