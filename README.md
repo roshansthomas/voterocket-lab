@@ -20,7 +20,6 @@ This lab is provided as part of [AWS Innovate Modern Applications Edition](https
 - [Creating the React front-end application](https://github.com/roshansthomas/voterocket-lab/#creating-the-react-front-end-application)
 - [Recap](https://github.com/roshansthomas/voterocket-lab/#recap)
 - [Clean Up](https://github.com/roshansthomas/voterocket-lab/#clean-up)
-- [Survey](https://github.com/roshansthomas/voterocket-lab/#survey)
 - [Further reading](https://github.com/roshansthomas/voterocket-lab/#further-reading)
 
 ## Setting Up the Lab Environment
@@ -515,10 +514,6 @@ amplify delete
 **46.** Delete the **amplify-lab**.
 
 You will need to enter **Delete** to delete the environment.
-
-## Survey
-Please help us to provide your feedback [here](https://amazonmr.au1.qualtrics.com/jfe/form/SV_6x7UgBL9FHn59dA?Session=HOL1). Participants who complete the surveys from AWS Innovate Online Conference - Modern Applications Edition will receive a gift code for USD25 in AWS credits. AWS credits will be sent via email by 30 November, 2021.
-
 
 ## Further reading
 
